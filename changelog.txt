@@ -1,4 +1,4 @@
-Version: 2.5.0
+raVersion: 2.5.0
   - Updated Bootstrap to version 5.2.3
   - Updated all outdated third party vendor libraries to their latest versions
 
