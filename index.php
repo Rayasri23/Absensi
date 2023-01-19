@@ -1,3 +1,58 @@
+<?php
+
+require_once("config.php");
+
+
+// if(!isset($_SESSION['username'])==0){
+//      header('Location: index.php');
+//  }
+
+if(isset($_POST['login'])){
+  $username = $_POST['username'];
+  $password = $_POST['password'];
+  $query = "SELECT * FROM user WHERE username='$username' and `password`='$password'";
+  $result = mysqli_query($con,$query);
+  $rows = mysqli_num_rows($result);
+  $dataLogin2 = mysqli_fetch_array($result);
+  var_dump($rows);
+  
+  if($rows==1){
+    if($dataLogin2['level']=='admin'){
+      // $_SESSION['logged'] = 1;
+      $_SESSION['username'] = $username;
+      // $_SESSION['ttd'] = $dataLogin2['ttd'];
+      $_SESSION['nama'] = $dataLogin2['nama'];
+      $_SESSION['foto'] = $dataLogin2['foto'];
+      $_SESSION['email'] = $dataLogin2['email'];
+          header("Location: dashboard.php");
+        }elseif ($dataLogin2['level']=='user'){
+          // $_SESSION['logged'] = 2;
+          // $_SESSION['username'] = $username;
+          // $_SESSION['ttd'] = $dataLogin2['ttd'];
+          // $_SESSION['id_user'] = $dataLogin2['id_user'];
+          // $_SESSION['nik'] = $dataLogin2['nik'];
+          // $_SESSION['nama'] = $dataLogin2['nama'];
+            header("Location: dashboard.php");
+            return;
+        }elseif ($dataLogin2['level']=='superadmin'){
+          // $_SESSION['logged'] = 3;
+          // $_SESSION['username'] = $username;
+          // $_SESSION['ttd'] = $dataLogin2['ttd'];
+          // $_SESSION['nama'] = $dataLogin2['nama'];
+          //   header("Location: dashboard.php");
+            return;
+          
+  }
+}else{
+  echo "<script type='text/javascript'>";
+  echo "alert('DATA TIDAK DAPAT LOGIN');";
+  echo "window.location.href='index.php'";
+  echo "</script>";
+}
+
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +60,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Pages / Login - NiceAdmin Bootstrap Template</title>
+  <title>Halaman Login</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -49,8 +104,8 @@
 
               <div class="d-flex justify-content-center py-4">
                 <a href="index.html" class="logo d-flex align-items-center w-auto">
-                  <img src="assets/img/logo.png" alt="">
-                  <span class="d-none d-lg-block">NiceAdmin</span>
+                  <img src="assets/img/logo1.png" alt="">
+                  <span class="d-none d-lg-block">ABSENSI-DJL</span>
                 </a>
               </div><!-- End Logo -->
 
@@ -59,25 +114,25 @@
                 <div class="card-body">
 
                   <div class="pt-4 pb-2">
-                    <h5 class="card-title text-center pb-0 fs-4">Login to Your Account</h5>
-                    <p class="text-center small">Enter your username & password to login</p>
+                    <h5 class="card-title text-center pb-0 fs-4">Masuk ke akun anda</h5>
+                    <p class="text-center small">Masukkan username & password untuk login</p>
                   </div>
 
-                  <form class="row g-3 needs-validation" novalidate>
+                  <form class="row g-3 needs-validation" action="" method="POST">
 
                     <div class="col-12">
                       <label for="yourUsername" class="form-label">Username</label>
                       <div class="input-group has-validation">
                         <span class="input-group-text" id="inputGroupPrepend">@</span>
                         <input type="text" name="username" class="form-control" id="yourUsername" required>
-                        <div class="invalid-feedback">Please enter your username.</div>
+                        <div class="invalid-feedback">Masukkan username anda.</div>
                       </div>
                     </div>
 
                     <div class="col-12">
                       <label for="yourPassword" class="form-label">Password</label>
                       <input type="password" name="password" class="form-control" id="yourPassword" required>
-                      <div class="invalid-feedback">Please enter your password!</div>
+                      <div class="invalid-feedback">Masukkan password!</div>
                     </div>
 
                     <div class="col-12">
@@ -87,23 +142,16 @@
                       </div>
                     </div>
                     <div class="col-12">
-                      <button class="btn btn-primary w-100" type="submit">Login</button>
+                      <button class="btn btn-primary w-100" type="submit" name="login">Login</button>
                     </div>
                     <div class="col-12">
-                      <p class="small mb-0">Don't have account? <a href="pages-register.html">Create an account</a></p>
+                      <p class="small mb-0">Tidak punya akun? <a href="pages-register.html">Buat akun</a></p>
                     </div>
                   </form>
 
                 </div>
               </div>
 
-              <div class="credits">
-                <!-- All the links in the footer should remain intact. -->
-                <!-- You can delete the links only if you purchased the pro version. -->
-                <!-- Licensing information: https://bootstrapmade.com/license/ -->
-                <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-                Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-              </div>
 
             </div>
           </div>
@@ -132,3 +180,4 @@
 </body>
 
 </html>
+
